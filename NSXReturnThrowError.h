@@ -18,7 +18,7 @@
 		does so without requiring ObjC++, relying on \@encode acrobatics
 		instead.
 
-		NSXReturnThrowError was coded against 10.4, but should be compatibale
+		NSXReturnThrowError was coded against 10.4, but should be compatible
 		with 10.3 as well. However that's currently untested.
 
 	@section Usage
@@ -69,6 +69,7 @@
 	@bug		I bet this breaks on 10.5. Hopefully not beyond repair.
 	@todo		Add a compile-time flag for whether to stuff __FILE__+friends
 				info into the generated NSError or not.
+	
 
 	***************************************************************************/
 
