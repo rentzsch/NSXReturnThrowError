@@ -76,45 +76,45 @@
 #import <Foundation/Foundation.h>
 
 typedef	enum {
-	JRErrorCodeType_Unknown,
-	JRErrorCodeType_Cocoa,			//	"@"
-	JRErrorCodeType_PosixOrMach,	//	"i" (-1 == posix+errno, otherwise mach)
-	JRErrorCodeType_Carbon,			//	"s" || "l"
-	JRErrorCodeType_errstr			//	"r*" || "*"
-}	JRErrorCodeType;
+	NSXErrorCodeType_Unknown,
+	NSXErrorCodeType_Cocoa,			//	"@"
+	NSXErrorCodeType_PosixOrMach,	//	"i" (-1 == posix+errno, otherwise mach)
+	NSXErrorCodeType_Carbon,		//	"s" || "l"
+	NSXErrorCodeType_errstr			//	"r*" || "*"
+}	NSXErrorCodeType;
 
 //--
 
-#define	errorCodeTypeFromObjCType(objCType)														\
-	({																							\
-		JRErrorCodeType result;																	\
-		switch (objCType[0]) {																	\
-			case 's':																			\
-			case 'l':																			\
-				result = JRErrorCodeType_Carbon;												\
-				break;																			\
-			case 'i':																			\
-				result = JRErrorCodeType_PosixOrMach;											\
-				break;																			\
-			case '@':																			\
-				result = JRErrorCodeType_Cocoa;													\
-				break;																			\
-			case '*':																			\
-				result = JRErrorCodeType_errstr;												\
-				break;																			\
-			case 'r':																			\
-				result = '*' == objCType[1] ? JRErrorCodeType_errstr : JRErrorCodeType_Unknown;	\
-				break;																			\
-			default:																			\
-				result = JRErrorCodeType_Unknown;												\
-		}																						\
-		result;																					\
+#define	errorCodeTypeFromObjCType(objCType)															\
+	({																								\
+		NSXErrorCodeType result;																	\
+		switch (objCType[0]) {																		\
+			case 's':																				\
+			case 'l':																				\
+				result = NSXErrorCodeType_Carbon;													\
+				break;																				\
+			case 'i':																				\
+				result = NSXErrorCodeType_PosixOrMach;												\
+				break;																				\
+			case '@':																				\
+				result = NSXErrorCodeType_Cocoa;													\
+				break;																				\
+			case '*':																				\
+				result = NSXErrorCodeType_errstr;													\
+				break;																				\
+			case 'r':																				\
+				result = '*' == objCType[1] ? NSXErrorCodeType_errstr : NSXErrorCodeType_Unknown;	\
+				break;																				\
+			default:																				\
+				result = NSXErrorCodeType_Unknown;													\
+		}																							\
+		result;																						\
 	})
 
 //--
 
 #define	NSXReturnError(CODE)	\
-	{	\
+	do{	\
 		typeof(CODE) codeResult = (CODE);	\
 		if ('@' == @encode(typeof(codeResult))[0]) {	\
 			if (nil == codeResult) {	\
@@ -130,7 +130,7 @@ typedef	enum {
 		} else {	\
 			if (0 != codeResult) {	\
 				switch (errorCodeTypeFromObjCType(@encode(typeof(CODE)))) {	\
-					case JRErrorCodeType_Carbon:	\
+					case NSXErrorCodeType_Carbon:	\
 						error = [NSError errorWithDomain:NSOSStatusErrorDomain	\
 													code:(int)codeResult	\
 												userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
@@ -140,7 +140,7 @@ typedef	enum {
 													@#CODE, @"origin",	\
 													nil]];	\
 						break;	\
-					case JRErrorCodeType_PosixOrMach:	\
+					case NSXErrorCodeType_PosixOrMach:	\
 						if (-1 == (int)codeResult) {	\
 							error = [NSError errorWithDomain:NSPOSIXErrorDomain	\
 														code:errno	\
@@ -161,7 +161,7 @@ typedef	enum {
 														nil]];	\
 						}	\
 						break;	\
-					case JRErrorCodeType_errstr:	\
+					case NSXErrorCodeType_errstr:	\
 						error = [NSError errorWithDomain:@"errstr"	\
 													code:-1	\
 												userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
@@ -173,20 +173,20 @@ typedef	enum {
 													nil]];	\
 						break;	\
 					default:	\
-						assert(0 && "unknown JRErrorCodeType");	\
+						assert(0 && "unknown NSXErrorCodeType");	\
 						break;	\
 				}	\
 			}	\
 		}	\
-	}
+	}while(0)
 
 #define NSXThrowError(CODE) \
-	{	\
+	do{	\
 		NSError *error = nil;	\
 		NSXReturnError(CODE);	\
 		if (error) {	\
-			[[NSException exceptionWithName:@"NSError"	\
+			[[NSException exceptionWithName:@"NSXError"	\
 									 reason:[error description]	\
 								   userInfo:[NSDictionary dictionaryWithObject:error forKey:@"error"]] raise];	\
 		}	\
-	}
+	}while(0)

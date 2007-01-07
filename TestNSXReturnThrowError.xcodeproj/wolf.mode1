@@ -258,7 +258,6 @@
 								<string>08FB7794FE84155DC02AAC07</string>
 								<string>08FB7795FE84155DC02AAC07</string>
 								<string>1C37FBAC04509CD000000102</string>
-								<string>79874C690B50BE5200AEDF1A</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
@@ -370,9 +369,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>79874C6A0B50BE5200AEDF1A</string>
+				<string>79874CF50B51870D00AEDF1A</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>79874C6B0B50BE5200AEDF1A</string>
+				<string>79874CF60B51870D00AEDF1A</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -532,7 +531,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>&lt;No Editor&gt;</string>
+								<string>TestNSXReturnThrowError.m</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -590,7 +589,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>79874C610B50BE1A00AEDF1A</string>
-				<string>79874C620B50BE1A00AEDF1A</string>
+				<string>79874CFA0B51870D00AEDF1A</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -945,9 +944,9 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C0AD2B3069F1EA900FABCE6</string>
-				<string>79874C630B50BE1A00AEDF1A</string>
+				<string>79874D060B51873200AEDF1A</string>
 				<string>1CD0528B0623707200166675</string>
-				<string>79874C640B50BE1A00AEDF1A</string>
+				<string>79874D070B51873200AEDF1A</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.run</string>

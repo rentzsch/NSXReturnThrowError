@@ -32,12 +32,12 @@ int main (int argc, const char * argv[]) {
 	//--
 	
 	#define errorCodeTypeFromRValue(RVALUE)	errorCodeTypeFromObjCType(@encode(typeof(RVALUE)))
-	assert(JRErrorCodeType_Carbon == errorCodeTypeFromRValue(returnNoOSErr()));
-	assert(JRErrorCodeType_Carbon == errorCodeTypeFromRValue(returnNoOSStatus()));
-	assert(JRErrorCodeType_PosixOrMach == errorCodeTypeFromRValue(returnNoPosixErr()));
-	assert(JRErrorCodeType_PosixOrMach == errorCodeTypeFromRValue(returnNoMach_error()));
-	assert(JRErrorCodeType_Cocoa == errorCodeTypeFromRValue(returnObjCInstance()));
-	assert(JRErrorCodeType_errstr == errorCodeTypeFromRValue(returnNoErrstr()));
+	assert(NSXErrorCodeType_Carbon == errorCodeTypeFromRValue(returnNoOSErr()));
+	assert(NSXErrorCodeType_Carbon == errorCodeTypeFromRValue(returnNoOSStatus()));
+	assert(NSXErrorCodeType_PosixOrMach == errorCodeTypeFromRValue(returnNoPosixErr()));
+	assert(NSXErrorCodeType_PosixOrMach == errorCodeTypeFromRValue(returnNoMach_error()));
+	assert(NSXErrorCodeType_Cocoa == errorCodeTypeFromRValue(returnObjCInstance()));
+	assert(NSXErrorCodeType_errstr == errorCodeTypeFromRValue(returnNoErrstr()));
 	
 	//--
 	
@@ -94,7 +94,7 @@ int main (int argc, const char * argv[]) {
 		NSXThrowError(returnOSErr());
 		assert(0);
 	NS_HANDLER
-		assert([[localException name] isEqualToString:@"NSError"]);
+		assert([[localException name] isEqualToString:@"NSXError"]);
 		error = [[localException userInfo] objectForKey:@"error"];
 	NS_ENDHANDLER
 		assert(error);
@@ -106,7 +106,7 @@ int main (int argc, const char * argv[]) {
 		NSXThrowError(returnOSStatus());
 		assert(0);
 	NS_HANDLER
-		assert([[localException name] isEqualToString:@"NSError"]);
+		assert([[localException name] isEqualToString:@"NSXError"]);
 		error = [[localException userInfo] objectForKey:@"error"];
 	NS_ENDHANDLER
 		assert(error);
@@ -118,7 +118,7 @@ int main (int argc, const char * argv[]) {
 		NSXThrowError(returnPosixErr());
 		assert(0);
 	NS_HANDLER
-		assert([[localException name] isEqualToString:@"NSError"]);
+		assert([[localException name] isEqualToString:@"NSXError"]);
 		error = [[localException userInfo] objectForKey:@"error"];
 	NS_ENDHANDLER
 		assert(error);
@@ -130,7 +130,7 @@ int main (int argc, const char * argv[]) {
 		NSXThrowError(returnMach_error());
 		assert(0);
 	NS_HANDLER
-		assert([[localException name] isEqualToString:@"NSError"]);
+		assert([[localException name] isEqualToString:@"NSXError"]);
 		error = [[localException userInfo] objectForKey:@"error"];
 	NS_ENDHANDLER
 		assert(error);
@@ -142,7 +142,7 @@ int main (int argc, const char * argv[]) {
 		NSXThrowError(returnNilObjCInstance());
 		assert(0);
 	NS_HANDLER
-		assert([[localException name] isEqualToString:@"NSError"]);
+		assert([[localException name] isEqualToString:@"NSXError"]);
 		error = [[localException userInfo] objectForKey:@"error"];
 	NS_ENDHANDLER
 		assert(error);
@@ -154,7 +154,7 @@ int main (int argc, const char * argv[]) {
 		NSXThrowError(returnErrstr());
 		assert(0);
 	NS_HANDLER
-		assert([[localException name] isEqualToString:@"NSError"]);
+		assert([[localException name] isEqualToString:@"NSXError"]);
 		error = [[localException userInfo] objectForKey:@"error"];
 	NS_ENDHANDLER
 		assert(error);
