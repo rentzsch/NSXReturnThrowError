@@ -2,6 +2,60 @@
 	NSXReturnThrowError.h
 		Copyright (c) 2007 Jonathan 'Wolf' Rentzsch: <http://rentzsch.com>
 		Some rights reserved: <http://opensource.org/licenses/mit-license.php>
+	
+	@section Overview
+
+		NSXReturnThrowError does two things:
+
+		1. Eases wrapping error codes into NSError objects.
+
+		2. Enhances NSError by adding origin information to the error instance.
+		   Origin information includes the actual line of code that returned
+		   the error, as well as the file+line+function/method name.
+
+	@section Usage
+
+		NSXReturnThrowError handles both types of error handling: explicit
+		returning of NSError objects and raising NSExceptions.
+
+		Use NSXReturnError() if you're returning NSError objects explicitly:
+
+		@code
+		- (id)demoReturnError:(NSError**)error_ {
+			id result = nil;
+			NSError *error = nil;
+			
+			NSXReturnError(SomeCarbonFunction());
+			if (!error)
+				NSXReturnError(someposixfunction());
+			if (!error)
+				NSXReturnError(some_mach_function());
+			if (!error)
+				NSXReturnError([SomeCocoaClass newObject]);
+			
+			if (error_) *error_ = error;
+			return result;
+		}
+		@endcode
+
+		Use NSXThrowError() if you'd prefer to raise NSException objects:
+
+		@code
+		- (id)demo {
+			id result = nil;
+			
+			NSXThrowError(SomeCarbonFunction());
+			NSXThrowError(someposixfunction());
+			NSXThrowError(some_mach_function());
+			NSXThrowError([SomeCocoaClass newObject]);
+			
+			return result;
+		}
+		@endcode
+		
+		The current structure of the raised NSException object is that it's a
+		normal NSException whose name is "NSError". The actual error object is
+		hung off the exception's userInfo dictionary with the key of @"error".
 
 	@mainpage	NSXReturnThrowError
 	@bug		I bet this breaks on 10.5. Hopefully not beyond repair.
