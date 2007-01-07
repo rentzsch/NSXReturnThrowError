@@ -13,6 +13,14 @@
 		   Origin information includes the actual line of code that returned
 		   the error, as well as the file+line+function/method name.
 
+		A big NSXReturnThrowError feature is that it deduces the correct NSError
+		error domain based on the wrapped code's return type+value. Bonus: it
+		does so without requiring ObjC++, relying on \@encode acrobatics
+		instead.
+
+		NSXReturnThrowError was coded against 10.4, but should be compatibale
+		with 10.3 as well. However that's currently untested.
+
 	@section Usage
 
 		NSXReturnThrowError handles both types of error handling: explicit
