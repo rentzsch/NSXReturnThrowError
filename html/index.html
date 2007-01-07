@@ -19,7 +19,7 @@ NSXReturnThrowError does two things:<p>
 1. Eases wrapping error codes into NSError objects.<p>
 2. Enhances NSError by adding origin information to the error instance. Origin information includes the actual line of code that returned the error, as well as the file+line+function/method name.<p>
 A big NSXReturnThrowError feature is that it deduces the correct NSError error domain based on the wrapped code's return type+value. Bonus: it does so without requiring ObjC++, relying on @encode acrobatics instead.<p>
-NSXReturnThrowError was coded against 10.4, but should be compatibale with 10.3 as well. However that's currently untested.<h2><a class="anchor" name="Usage">
+NSXReturnThrowError was coded against 10.4, but should be compatible with 10.3 as well. However that's currently untested.<h2><a class="anchor" name="Usage">
 Usage</a></h2>
 NSXReturnThrowError handles both types of error handling: explicit returning of NSError objects and raising NSExceptions.<p>
 Use <a class="el" href="NSXReturnThrowError_8h.html#bf50d60654b53d3fdcf18f34dd3d2fbe">NSXReturnError()</a> if you're returning NSError objects explicitly:<p>
@@ -54,7 +54,7 @@ Use <a class="el" href="NSXReturnThrowError_8h.html#8448c530ed02fd8581062129f854
 The current structure of the raised NSException object is that it's a normal NSException whose name is "NSError". The actual error object is hung off the exception's userInfo dictionary with the key of @"error".<p>
 <dl compact><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>I bet this breaks on 10.5. Hopefully not beyond repair. </dd></dl>
 <dl compact><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Add a compile-time flag for whether to stuff __FILE__+friends info into the generated NSError or not.</dd></dl>
-<hr size="1"><address style="align: right;"><small>Generated on Sun Jan 7 01:16:06 2007 for NSXReturnThrowError by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Sun Jan 7 01:24:03 2007 for NSXReturnThrowError by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.1 </small></address>
 </body>

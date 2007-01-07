@@ -17,124 +17,124 @@
     <li><a href="globals.html"><span>File&nbsp;Members</span></a></li>
   </ul></div>
 <h1>NSXReturnThrowError.h</h1><a href="NSXReturnThrowError_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/***************************************************************************/</span>
-<a name="l00075"></a>00075 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
-<a name="l00076"></a><a class="code" href="NSXReturnThrowError_8h.html#291295d2bcbeca6fd07a140dd0529ecc">00076</a> 
-<a name="l00077"></a>00077 <span class="keyword">typedef</span> <span class="keyword">enum</span> {
-<a name="l00078"></a>00078     JRErrorCodeType_Unknown,
-<a name="l00079"></a>00079     JRErrorCodeType_Cocoa,          <span class="comment">//  "@"</span>
-<a name="l00080"></a>00080     JRErrorCodeType_PosixOrMach,    <span class="comment">//  "i" (-1 == posix+errno, otherwise mach)</span>
-<a name="l00081"></a>00081     JRErrorCodeType_Carbon,         <span class="comment">//  "s" || "l"</span>
-<a name="l00082"></a>00082     JRErrorCodeType_errstr          <span class="comment">//  "r*" || "*"</span>
-<a name="l00083"></a>00083 }   JRErrorCodeType;
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="comment">//--</span>
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087 <span class="preprocessor">#define errorCodeTypeFromObjCType(objCType)                                                     \</span>
-<a name="l00088"></a>00088 <span class="preprocessor">    ({                                                                                          \</span>
-<a name="l00089"></a>00089 <span class="preprocessor">        JRErrorCodeType result;                                                                 \</span>
-<a name="l00090"></a>00090 <span class="preprocessor">        switch (objCType[0]) {                                                                  \</span>
-<a name="l00091"></a>00091 <span class="preprocessor">            case 's':                                                                           \</span>
-<a name="l00092"></a>00092 <span class="preprocessor">            case 'l':                                                                           \</span>
-<a name="l00093"></a>00093 <span class="preprocessor">                result = JRErrorCodeType_Carbon;                                                \</span>
-<a name="l00094"></a>00094 <span class="preprocessor">                break;                                                                          \</span>
-<a name="l00095"></a>00095 <span class="preprocessor">            case 'i':                                                                           \</span>
-<a name="l00096"></a>00096 <span class="preprocessor">                result = JRErrorCodeType_PosixOrMach;                                           \</span>
-<a name="l00097"></a>00097 <span class="preprocessor">                break;                                                                          \</span>
-<a name="l00098"></a>00098 <span class="preprocessor">            case '@':                                                                           \</span>
-<a name="l00099"></a>00099 <span class="preprocessor">                result = JRErrorCodeType_Cocoa;                                                 \</span>
-<a name="l00100"></a>00100 <span class="preprocessor">                break;                                                                          \</span>
-<a name="l00101"></a>00101 <span class="preprocessor">            case '*':                                                                           \</span>
-<a name="l00102"></a>00102 <span class="preprocessor">                result = JRErrorCodeType_errstr;                                                \</span>
-<a name="l00103"></a>00103 <span class="preprocessor">                break;                                                                          \</span>
-<a name="l00104"></a><a class="code" href="NSXReturnThrowError_8h.html#bf50d60654b53d3fdcf18f34dd3d2fbe">00104</a> <span class="preprocessor">            case 'r':                                                                           \</span>
-<a name="l00105"></a>00105 <span class="preprocessor">                result = '*' == objCType[1] ? JRErrorCodeType_errstr : JRErrorCodeType_Unknown; \</span>
-<a name="l00106"></a>00106 <span class="preprocessor">                break;                                                                          \</span>
-<a name="l00107"></a>00107 <span class="preprocessor">            default:                                                                            \</span>
-<a name="l00108"></a>00108 <span class="preprocessor">                result = JRErrorCodeType_Unknown;                                               \</span>
-<a name="l00109"></a>00109 <span class="preprocessor">        }                                                                                       \</span>
-<a name="l00110"></a>00110 <span class="preprocessor">        result;                                                                                 \</span>
-<a name="l00111"></a>00111 <span class="preprocessor">    })</span>
-<a name="l00112"></a>00112 <span class="preprocessor"></span>
-<a name="l00113"></a>00113 <span class="comment">//--</span>
-<a name="l00114"></a>00114 
-<a name="l00115"></a>00115 <span class="preprocessor">#define NSXReturnError(CODE)    \</span>
-<a name="l00116"></a>00116 <span class="preprocessor">    {   \</span>
-<a name="l00117"></a>00117 <span class="preprocessor">        typeof(CODE) codeResult = (CODE);   \</span>
-<a name="l00118"></a>00118 <span class="preprocessor">        if ('@' == @encode(typeof(codeResult))[0]) {    \</span>
-<a name="l00119"></a>00119 <span class="preprocessor">            if (nil == codeResult) {    \</span>
-<a name="l00120"></a>00120 <span class="preprocessor">                error = [NSError errorWithDomain:</span><span class="stringliteral">@"NSCocoaErrorDomain"</span>  \
-<a name="l00121"></a>00121                                             code:-1 \
-<a name="l00122"></a>00122                                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
-<a name="l00123"></a>00123                                             [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
-<a name="l00124"></a>00124                                             [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
-<a name="l00125"></a>00125                                             [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
-<a name="l00126"></a>00126                                             @#CODE, <span class="stringliteral">@"origin"</span>,  \
-<a name="l00127"></a>00127                                             nil]];  \
-<a name="l00128"></a>00128             }   \
-<a name="l00129"></a>00129         } else {    \
-<a name="l00130"></a>00130             if (0 != codeResult) {  \
-<a name="l00131"></a>00131                 switch (errorCodeTypeFromObjCType(@encode(typeof(CODE)))) { \
-<a name="l00132"></a>00132                     case JRErrorCodeType_Carbon:    \
-<a name="l00133"></a>00133                         error = [NSError errorWithDomain:NSOSStatusErrorDomain  \
-<a name="l00134"></a>00134                                                     code:(int)codeResult    \
-<a name="l00135"></a>00135                                                 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
-<a name="l00136"></a>00136                                                     [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
-<a name="l00137"></a>00137                                                     [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
-<a name="l00138"></a>00138                                                     [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
-<a name="l00139"></a>00139                                                     @#CODE, <span class="stringliteral">@"origin"</span>,  \
-<a name="l00140"></a>00140                                                     nil]];  \
-<a name="l00141"></a>00141                         break;  \
-<a name="l00142"></a>00142                     case JRErrorCodeType_PosixOrMach:   \
-<a name="l00143"></a>00143                         if (-1 == (int)codeResult) {    \
-<a name="l00144"></a>00144                             error = [NSError errorWithDomain:NSPOSIXErrorDomain \
-<a name="l00145"></a>00145                                                         code:errno  \
-<a name="l00146"></a>00146                                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
-<a name="l00147"></a>00147                                                         [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
-<a name="l00148"></a>00148                                                         [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
-<a name="l00149"></a>00149                                                         [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
-<a name="l00150"></a>00150                                                         @#CODE, <span class="stringliteral">@"origin"</span>,  \
-<a name="l00151"></a>00151                                                         nil]];  \
-<a name="l00152"></a>00152                         } else {    \
-<a name="l00153"></a>00153                             error = [NSError errorWithDomain:NSMachErrorDomain  \
-<a name="l00154"></a>00154                                                         code:(int)codeResult    \
-<a name="l00155"></a>00155                                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
-<a name="l00156"></a>00156                                                         [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
-<a name="l00157"></a>00157                                                         [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
-<a name="l00158"></a>00158                                                         [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
-<a name="l00159"></a>00159                                                         @#CODE, <span class="stringliteral">@"origin"</span>,  \
-<a name="l00160"></a>00160                                                         nil]];  \
-<a name="l00161"></a>00161                         }   \
-<a name="l00162"></a>00162                         break;  \
-<a name="l00163"></a>00163                     case JRErrorCodeType_errstr:    \
-<a name="l00164"></a>00164                         error = [NSError errorWithDomain:<span class="stringliteral">@"errstr"</span>  \
-<a name="l00165"></a>00165                                                     code:-1 \
-<a name="l00166"></a>00166                                                 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
-<a name="l00167"></a>00167                                                     [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
-<a name="l00168"></a>00168                                                     [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
-<a name="l00169"></a>00169                                                     [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
-<a name="l00170"></a>00170                                                     @#CODE, <span class="stringliteral">@"origin"</span>,  \
-<a name="l00171"></a><a class="code" href="NSXReturnThrowError_8h.html#8448c530ed02fd8581062129f8540123">00171</a>                                                     [NSString stringWithUTF8String:(const char*)(intptr_t)codeResult], <span class="stringliteral">@"errstr"</span>,   \
-<a name="l00172"></a>00172                                                     nil]];  \
-<a name="l00173"></a>00173                         break;  \
-<a name="l00174"></a>00174                     default:    \
-<a name="l00175"></a>00175                         assert(0 &amp;&amp; "unknown JRErrorCodeType"); \
-<a name="l00176"></a>00176                         break;  \
-<a name="l00177"></a>00177                 }   \
-<a name="l00178"></a>00178             }   \
-<a name="l00179"></a>00179         }   \
-<a name="l00180"></a>00180     }
-<a name="l00181"></a>00181 
-<a name="l00182"></a>00182 <span class="preprocessor">#define NSXThrowError(CODE) \</span>
-<a name="l00183"></a>00183 <span class="preprocessor">    {   \</span>
-<a name="l00184"></a>00184 <span class="preprocessor">        NSError *error = nil;   \</span>
-<a name="l00185"></a>00185 <span class="preprocessor">        NSXReturnError(CODE);   \</span>
-<a name="l00186"></a>00186 <span class="preprocessor">        if (error) {    \</span>
-<a name="l00187"></a>00187 <span class="preprocessor">            [[NSException exceptionWithName:</span><span class="stringliteral">@"NSError"</span>  \
-<a name="l00188"></a>00188                                      reason:[error description] \
-<a name="l00189"></a>00189                                    userInfo:[NSDictionary dictionaryWithObject:error forKey:<span class="stringliteral">@"error"</span>]] raise];  \
-<a name="l00190"></a>00190         }   \
-<a name="l00191"></a>00191     }
-</pre></div><hr size="1"><address style="align: right;"><small>Generated on Sun Jan 7 01:16:06 2007 for NSXReturnThrowError by&nbsp;
+<a name="l00076"></a>00076 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
+<a name="l00077"></a><a class="code" href="NSXReturnThrowError_8h.html#291295d2bcbeca6fd07a140dd0529ecc">00077</a> 
+<a name="l00078"></a>00078 <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00079"></a>00079     JRErrorCodeType_Unknown,
+<a name="l00080"></a>00080     JRErrorCodeType_Cocoa,          <span class="comment">//  "@"</span>
+<a name="l00081"></a>00081     JRErrorCodeType_PosixOrMach,    <span class="comment">//  "i" (-1 == posix+errno, otherwise mach)</span>
+<a name="l00082"></a>00082     JRErrorCodeType_Carbon,         <span class="comment">//  "s" || "l"</span>
+<a name="l00083"></a>00083     JRErrorCodeType_errstr          <span class="comment">//  "r*" || "*"</span>
+<a name="l00084"></a>00084 }   JRErrorCodeType;
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086 <span class="comment">//--</span>
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088 <span class="preprocessor">#define errorCodeTypeFromObjCType(objCType)                                                     \</span>
+<a name="l00089"></a>00089 <span class="preprocessor">    ({                                                                                          \</span>
+<a name="l00090"></a>00090 <span class="preprocessor">        JRErrorCodeType result;                                                                 \</span>
+<a name="l00091"></a>00091 <span class="preprocessor">        switch (objCType[0]) {                                                                  \</span>
+<a name="l00092"></a>00092 <span class="preprocessor">            case 's':                                                                           \</span>
+<a name="l00093"></a>00093 <span class="preprocessor">            case 'l':                                                                           \</span>
+<a name="l00094"></a>00094 <span class="preprocessor">                result = JRErrorCodeType_Carbon;                                                \</span>
+<a name="l00095"></a>00095 <span class="preprocessor">                break;                                                                          \</span>
+<a name="l00096"></a>00096 <span class="preprocessor">            case 'i':                                                                           \</span>
+<a name="l00097"></a>00097 <span class="preprocessor">                result = JRErrorCodeType_PosixOrMach;                                           \</span>
+<a name="l00098"></a>00098 <span class="preprocessor">                break;                                                                          \</span>
+<a name="l00099"></a>00099 <span class="preprocessor">            case '@':                                                                           \</span>
+<a name="l00100"></a>00100 <span class="preprocessor">                result = JRErrorCodeType_Cocoa;                                                 \</span>
+<a name="l00101"></a>00101 <span class="preprocessor">                break;                                                                          \</span>
+<a name="l00102"></a>00102 <span class="preprocessor">            case '*':                                                                           \</span>
+<a name="l00103"></a>00103 <span class="preprocessor">                result = JRErrorCodeType_errstr;                                                \</span>
+<a name="l00104"></a>00104 <span class="preprocessor">                break;                                                                          \</span>
+<a name="l00105"></a><a class="code" href="NSXReturnThrowError_8h.html#bf50d60654b53d3fdcf18f34dd3d2fbe">00105</a> <span class="preprocessor">            case 'r':                                                                           \</span>
+<a name="l00106"></a>00106 <span class="preprocessor">                result = '*' == objCType[1] ? JRErrorCodeType_errstr : JRErrorCodeType_Unknown; \</span>
+<a name="l00107"></a>00107 <span class="preprocessor">                break;                                                                          \</span>
+<a name="l00108"></a>00108 <span class="preprocessor">            default:                                                                            \</span>
+<a name="l00109"></a>00109 <span class="preprocessor">                result = JRErrorCodeType_Unknown;                                               \</span>
+<a name="l00110"></a>00110 <span class="preprocessor">        }                                                                                       \</span>
+<a name="l00111"></a>00111 <span class="preprocessor">        result;                                                                                 \</span>
+<a name="l00112"></a>00112 <span class="preprocessor">    })</span>
+<a name="l00113"></a>00113 <span class="preprocessor"></span>
+<a name="l00114"></a>00114 <span class="comment">//--</span>
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116 <span class="preprocessor">#define NSXReturnError(CODE)    \</span>
+<a name="l00117"></a>00117 <span class="preprocessor">    {   \</span>
+<a name="l00118"></a>00118 <span class="preprocessor">        typeof(CODE) codeResult = (CODE);   \</span>
+<a name="l00119"></a>00119 <span class="preprocessor">        if ('@' == @encode(typeof(codeResult))[0]) {    \</span>
+<a name="l00120"></a>00120 <span class="preprocessor">            if (nil == codeResult) {    \</span>
+<a name="l00121"></a>00121 <span class="preprocessor">                error = [NSError errorWithDomain:</span><span class="stringliteral">@"NSCocoaErrorDomain"</span>  \
+<a name="l00122"></a>00122                                             code:-1 \
+<a name="l00123"></a>00123                                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
+<a name="l00124"></a>00124                                             [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
+<a name="l00125"></a>00125                                             [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
+<a name="l00126"></a>00126                                             [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
+<a name="l00127"></a>00127                                             @#CODE, <span class="stringliteral">@"origin"</span>,  \
+<a name="l00128"></a>00128                                             nil]];  \
+<a name="l00129"></a>00129             }   \
+<a name="l00130"></a>00130         } else {    \
+<a name="l00131"></a>00131             if (0 != codeResult) {  \
+<a name="l00132"></a>00132                 switch (errorCodeTypeFromObjCType(@encode(typeof(CODE)))) { \
+<a name="l00133"></a>00133                     case JRErrorCodeType_Carbon:    \
+<a name="l00134"></a>00134                         error = [NSError errorWithDomain:NSOSStatusErrorDomain  \
+<a name="l00135"></a>00135                                                     code:(int)codeResult    \
+<a name="l00136"></a>00136                                                 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
+<a name="l00137"></a>00137                                                     [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
+<a name="l00138"></a>00138                                                     [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
+<a name="l00139"></a>00139                                                     [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
+<a name="l00140"></a>00140                                                     @#CODE, <span class="stringliteral">@"origin"</span>,  \
+<a name="l00141"></a>00141                                                     nil]];  \
+<a name="l00142"></a>00142                         break;  \
+<a name="l00143"></a>00143                     case JRErrorCodeType_PosixOrMach:   \
+<a name="l00144"></a>00144                         if (-1 == (int)codeResult) {    \
+<a name="l00145"></a>00145                             error = [NSError errorWithDomain:NSPOSIXErrorDomain \
+<a name="l00146"></a>00146                                                         code:errno  \
+<a name="l00147"></a>00147                                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
+<a name="l00148"></a>00148                                                         [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
+<a name="l00149"></a>00149                                                         [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
+<a name="l00150"></a>00150                                                         [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
+<a name="l00151"></a>00151                                                         @#CODE, <span class="stringliteral">@"origin"</span>,  \
+<a name="l00152"></a>00152                                                         nil]];  \
+<a name="l00153"></a>00153                         } else {    \
+<a name="l00154"></a>00154                             error = [NSError errorWithDomain:NSMachErrorDomain  \
+<a name="l00155"></a>00155                                                         code:(int)codeResult    \
+<a name="l00156"></a>00156                                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
+<a name="l00157"></a>00157                                                         [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
+<a name="l00158"></a>00158                                                         [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
+<a name="l00159"></a>00159                                                         [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
+<a name="l00160"></a>00160                                                         @#CODE, <span class="stringliteral">@"origin"</span>,  \
+<a name="l00161"></a>00161                                                         nil]];  \
+<a name="l00162"></a>00162                         }   \
+<a name="l00163"></a>00163                         break;  \
+<a name="l00164"></a>00164                     case JRErrorCodeType_errstr:    \
+<a name="l00165"></a>00165                         error = [NSError errorWithDomain:<span class="stringliteral">@"errstr"</span>  \
+<a name="l00166"></a>00166                                                     code:-1 \
+<a name="l00167"></a>00167                                                 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:    \
+<a name="l00168"></a>00168                                                     [NSString stringWithUTF8String:__FILE__],   <span class="stringliteral">@"reportingFile"</span>,   \
+<a name="l00169"></a>00169                                                     [NSNumber numberWithInt:__LINE__],   <span class="stringliteral">@"reportingLine"</span>,  \
+<a name="l00170"></a>00170                                                     [NSString stringWithUTF8String:__PRETTY_FUNCTION__], <span class="stringliteral">@"reportingMethod"</span>,    \
+<a name="l00171"></a>00171                                                     @#CODE, <span class="stringliteral">@"origin"</span>,  \
+<a name="l00172"></a><a class="code" href="NSXReturnThrowError_8h.html#8448c530ed02fd8581062129f8540123">00172</a>                                                     [NSString stringWithUTF8String:(const char*)(intptr_t)codeResult], <span class="stringliteral">@"errstr"</span>,   \
+<a name="l00173"></a>00173                                                     nil]];  \
+<a name="l00174"></a>00174                         break;  \
+<a name="l00175"></a>00175                     default:    \
+<a name="l00176"></a>00176                         assert(0 &amp;&amp; "unknown JRErrorCodeType"); \
+<a name="l00177"></a>00177                         break;  \
+<a name="l00178"></a>00178                 }   \
+<a name="l00179"></a>00179             }   \
+<a name="l00180"></a>00180         }   \
+<a name="l00181"></a>00181     }
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183 <span class="preprocessor">#define NSXThrowError(CODE) \</span>
+<a name="l00184"></a>00184 <span class="preprocessor">    {   \</span>
+<a name="l00185"></a>00185 <span class="preprocessor">        NSError *error = nil;   \</span>
+<a name="l00186"></a>00186 <span class="preprocessor">        NSXReturnError(CODE);   \</span>
+<a name="l00187"></a>00187 <span class="preprocessor">        if (error) {    \</span>
+<a name="l00188"></a>00188 <span class="preprocessor">            [[NSException exceptionWithName:</span><span class="stringliteral">@"NSError"</span>  \
+<a name="l00189"></a>00189                                      reason:[error description] \
+<a name="l00190"></a>00190                                    userInfo:[NSDictionary dictionaryWithObject:error forKey:<span class="stringliteral">@"error"</span>]] raise];  \
+<a name="l00191"></a>00191         }   \
+<a name="l00192"></a>00192     }
+</pre></div><hr size="1"><address style="align: right;"><small>Generated on Sun Jan 7 01:24:03 2007 for NSXReturnThrowError by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.1 </small></address>
 </body>
