@@ -113,12 +113,12 @@ typedef	enum {
 
 //--
 
-#define	NSXReturnError(CODE)	\
+#define	NSXMakeError(ERROR, CODE)	\
 	do{	\
 		typeof(CODE) codeResult = (CODE);	\
 		if ('@' == @encode(typeof(codeResult))[0]) {	\
 			if (nil == codeResult) {	\
-				error = [NSError errorWithDomain:@"NSCocoaErrorDomain"	\
+				ERROR = [NSError errorWithDomain:@"NSCocoaErrorDomain"	\
 											code:-1	\
 										userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
 											[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
@@ -131,7 +131,7 @@ typedef	enum {
 			if (0 != codeResult) {	\
 				switch (errorCodeTypeFromObjCType(@encode(typeof(CODE)))) {	\
 					case NSXErrorCodeType_Carbon:	\
-						error = [NSError errorWithDomain:NSOSStatusErrorDomain	\
+						ERROR = [NSError errorWithDomain:NSOSStatusErrorDomain	\
 													code:(int)codeResult	\
 												userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
 													[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
@@ -142,7 +142,7 @@ typedef	enum {
 						break;	\
 					case NSXErrorCodeType_PosixOrMach:	\
 						if (-1 == (int)codeResult) {	\
-							error = [NSError errorWithDomain:NSPOSIXErrorDomain	\
+							ERROR = [NSError errorWithDomain:NSPOSIXErrorDomain	\
 														code:errno	\
 													userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
 														[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
@@ -151,7 +151,7 @@ typedef	enum {
 														@#CODE, @"origin",	\
 														nil]];	\
 						} else {	\
-							error = [NSError errorWithDomain:NSMachErrorDomain	\
+							ERROR = [NSError errorWithDomain:NSMachErrorDomain	\
 														code:(int)codeResult	\
 													userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
 														[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
@@ -162,7 +162,7 @@ typedef	enum {
 						}	\
 						break;	\
 					case NSXErrorCodeType_errstr:	\
-						error = [NSError errorWithDomain:@"errstr"	\
+						ERROR = [NSError errorWithDomain:@"errstr"	\
 													code:-1	\
 												userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
 													[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
@@ -179,6 +179,8 @@ typedef	enum {
 			}	\
 		}	\
 	}while(0)
+
+#define	NSXReturnError(CODE)	NSXMakeError(error,CODE)
 
 #define NSXThrowError(CODE) \
 	do{	\
