@@ -185,7 +185,88 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array/>
+	<array>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>79749FE90B810CE4000EA562</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>NSXReturnThrowError.h</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>79749FEA0B810CE4000EA562</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>NSXReturnThrowError.h</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>79749FEC0B810CE4000EA562</string>
+						<key>history</key>
+						<array>
+							<string>79749FEB0B810CE4000EA562</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {903, 1482}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>456 55 903 1523 0 0 2560 1578 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>79749FED0B810CE4000EA562</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>NSXReturnThrowError.m</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>79749FEE0B810CE4000EA562</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>NSXReturnThrowError.m</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>79749FF10B810CE4000EA562</string>
+						<key>history</key>
+						<array>
+							<string>79749FEF0B810CE4000EA562</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {1059, 1044}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>222 299 1059 1085 0 0 2560 1578 </string>
+			</dict>
+		</dict>
+	</array>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -369,9 +450,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>79316C310B802B1100CCE950</string>
+				<string>79749FDE0B810C89000EA562</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>79316C320B802B1100CCE950</string>
+				<string>79749FDF0B810C89000EA562</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -507,6 +588,8 @@
 	<array>
 		<string>1C0AD2B3069F1EA900FABCE6</string>
 		<string>79874C610B50BE1A00AEDF1A</string>
+		<string>79749FED0B810CE4000EA562</string>
+		<string>79749FE90B810CE4000EA562</string>
 		<string>/Users/wolf/code/sf/redshed/cocoa/NSXReturnThrowError/TestNSXReturnThrowError.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -531,7 +614,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TestNSXReturnThrowError.m</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -548,12 +631,10 @@
 							<string>240pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
-								<string>{{0, 93}, {852, 143}}</string>
+								<string>{{0, 30}, {852, 206}}</string>
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>
@@ -591,7 +672,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>79874C610B50BE1A00AEDF1A</string>
-				<string>79316C550B802D3300CCE950</string>
+				<string>79749FE60B810CE2000EA562</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -963,9 +1044,9 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C0AD2B3069F1EA900FABCE6</string>
-				<string>79316C560B802D3300CCE950</string>
+				<string>79749FE70B810CE2000EA562</string>
 				<string>1CD0528B0623707200166675</string>
-				<string>79316C570B802D3300CCE950</string>
+				<string>79749FE80B810CE2000EA562</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.run</string>

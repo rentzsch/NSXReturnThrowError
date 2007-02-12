@@ -56,8 +56,14 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 192949002;
-			PBXWorkspaceStateSaveDate = 192949002;
+			PBXPerProjectTemplateStateSaveDate = 193006726;
+			PBXWorkspaceStateSaveDate = 193006726;
+		};
+		perUserProjectItems = {
+			79749FEB0B810CE4000EA562 /* PBXTextBookmark */ = 79749FEB0B810CE4000EA562 /* PBXTextBookmark */;
+			79749FEC0B810CE4000EA562 /* PBXTextBookmark */ = 79749FEC0B810CE4000EA562 /* PBXTextBookmark */;
+			79749FEF0B810CE4000EA562 /* PBXTextBookmark */ = 79749FEF0B810CE4000EA562 /* PBXTextBookmark */;
+			79749FF10B810CE4000EA562 /* PBXTextBookmark */ = 79749FF10B810CE4000EA562 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 79874C430B50B9EB00AEDF1A /* Source Control */;
 		userBuildSettings = {
@@ -78,6 +84,62 @@
 			sepNavVisRect = "{{0, 0}, {873, 898}}";
 			sepNavWindowFrame = "{{38, 46}, {912, 956}}";
 		};
+	};
+	79749FEB0B810CE4000EA562 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 79874C510B50BA6300AEDF1A /* NSXReturnThrowError.h */;
+		name = "NSXReturnThrowError.h: BOOLErrorDomain";
+		rLen = 0;
+		rLoc = 2451;
+		rType = 0;
+		vrLen = 3193;
+		vrLoc = 0;
+	};
+	79749FEC0B810CE4000EA562 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 79874C510B50BA6300AEDF1A /* NSXReturnThrowError.h */;
+		name = "NSXReturnThrowError.h: 101";
+		rLen = 0;
+		rLoc = 3267;
+		rType = 0;
+		vrLen = 3287;
+		vrLoc = 0;
+	};
+	79749FEF0B810CE4000EA562 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 79749FF00B810CE4000EA562 /* NSXReturnThrowError.m */;
+		rLen = 0;
+		rLoc = 2147483647;
+		rType = 0;
+	};
+	79749FF00B810CE4000EA562 /* NSXReturnThrowError.m */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
+		name = NSXReturnThrowError.m;
+		path = /Users/wolf/code/sf/redshed/cocoa/NSXReturnThrowError/NSXReturnThrowError.m;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1020, 1498}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRect = "{{0, 0}, {1020, 1012}}";
+			sepNavWindowFrame = "{{222, 299}, {1059, 1085}}";
+		};
+	};
+	79749FF10B810CE4000EA562 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 79749FF20B810CE4000EA562 /* NSXReturnThrowError.m */;
+		name = "(null): 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 2558;
+		vrLoc = 0;
+	};
+	79749FF20B810CE4000EA562 /* NSXReturnThrowError.m */ = {
+		isa = PBXFileReference;
+		name = NSXReturnThrowError.m;
+		path = /Users/wolf/code/sf/redshed/cocoa/NSXReturnThrowError/NSXReturnThrowError.m;
+		sourceTree = "<absolute>";
 	};
 	79874C400B50B9E700AEDF1A /* TestNSXReturnThrowError */ = {
 		isa = PBXExecutable;
@@ -121,9 +183,9 @@
 	};
 	79874C510B50BA6300AEDF1A /* NSXReturnThrowError.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {864, 1465}}";
-			sepNavSelRange = "{2451, 0}";
-			sepNavVisRect = "{{0, 0}, {864, 1465}}";
+			sepNavIntBoundsRect = "{{0, 0}, {962, 1456}}";
+			sepNavSelRange = "{3267, 0}";
+			sepNavVisRect = "{{0, 6}, {864, 1450}}";
 			sepNavWindowFrame = "{{456, 55}, {903, 1523}}";
 		};
 	};

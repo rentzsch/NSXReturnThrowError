@@ -87,14 +87,17 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 	}while(0)
 
 #define	NSXReturnError(CODE)	NSXMakeError(error, CODE)
+ 
+#define NSXRaiseError(ERROR) \
+    [[NSException exceptionWithName:NSXErrorExceptionName	\
+                             reason:[error description]	\
+                           userInfo:[NSDictionary dictionaryWithObject:error forKey:@"error"]] raise];
 
 #define NSXThrowError(CODE) \
 	do{	\
 		NSError *error = nil;	\
 		NSXReturnError(CODE);	\
 		if (error) {	\
-			[[NSException exceptionWithName:NSXErrorExceptionName	\
-									 reason:[error description]	\
-								   userInfo:[NSDictionary dictionaryWithObject:error forKey:@"error"]] raise];	\
+			NSXRaiseError(ERROR);	\
 		}	\
 	}while(0)
