@@ -33,7 +33,7 @@ Use <a class="el" href="NSXReturnThrowError_8h.html#bf50d60654b53d3fdcf18f34dd3d
             <span class="keywordflow">if</span> (!error)
                 <a class="code" href="NSXReturnThrowError_8h.html#bf50d60654b53d3fdcf18f34dd3d2fbe">NSXReturnError</a>(some_mach_function());
             <span class="keywordflow">if</span> (!error)
-                <a class="code" href="NSXReturnThrowError_8h.html#bf50d60654b53d3fdcf18f34dd3d2fbe">NSXReturnError</a>([SomeCocoaClass newObject]);
+                <a class="code" href="NSXReturnThrowError_8h.html#bf50d60654b53d3fdcf18f34dd3d2fbe">NSXReturnError</a>([SomeCocoaClass sharedInstance]);
             
             <span class="keywordflow">if</span> (error_) *error_ = error;
             <span class="keywordflow">return</span> result;
@@ -52,9 +52,8 @@ Use <a class="el" href="NSXReturnThrowError_8h.html#8448c530ed02fd8581062129f854
         }
 </pre></div><p>
 The current structure of the raised NSException object is that it's a normal NSException whose name is "NSError". The actual error object is hung off the exception's userInfo dictionary with the key of @"error".<p>
-<dl compact><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>I bet this breaks on 10.5. Hopefully not beyond repair. </dd></dl>
 <dl compact><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Add a compile-time flag for whether to stuff __FILE__+friends info into the generated NSError or not.</dd></dl>
-<hr size="1"><address style="align: right;"><small>Generated on Sun Jan 7 01:24:03 2007 for NSXReturnThrowError by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Sun Feb 11 23:15:00 2007 for NSXReturnThrowError by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.1 </small></address>
 </body>

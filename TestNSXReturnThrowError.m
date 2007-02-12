@@ -1,11 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <NSXReturnThrowError.h>
+#import "NSXReturnThrowError.m"
 #include <mach/error.h>
-
-#ifndef ERRSTR_T
-	#define ERRSTR_T
-	typedef	const char*	errstr_t;
-#endif
 
 //--
 
@@ -14,14 +9,18 @@ static OSStatus returnNoOSStatus() { return 0; }
 static int returnNoPosixErr() { return 0; }
 static mach_error_t returnNoMach_error() { return err_none; }
 static id returnObjCInstance() { return [NSFileManager defaultManager]; }
-static errstr_t returnNoErrstr() { return NULL; }
+static char* returnGoodCharPtr(){ return "foo"; }
+static int* returnGoodIntPtr(){ static int dummy = 42; return &dummy; }
+static BOOL returnGoodBool(){ return YES; }
 
 static OSErr returnOSErr() { return qErr; }
 static OSStatus returnOSStatus() { return qErr; }
 static int returnPosixErr() { errno = EPERM; return -1; }
 static mach_error_t returnMach_error() { return err_local|1; }
 static id returnNilObjCInstance() { return nil; }
-static errstr_t returnErrstr() { return "some_error"; }
+static char* returnBadCharPtr(){ return NULL; }
+static int* returnBadIntPtr(){ return NULL; }
+static BOOL returnBadBool(){ return NO; }
 
 //--
 
@@ -31,13 +30,12 @@ int main (int argc, const char * argv[]) {
 	
 	//--
 	
-	#define errorCodeTypeFromRValue(RVALUE)	errorCodeTypeFromObjCType(@encode(typeof(RVALUE)))
+	#define errorCodeTypeFromRValue(RVALUE)	NSXErrorCodeTypeFromObjCType(@encode(typeof(RVALUE)))
 	assert(NSXErrorCodeType_Carbon == errorCodeTypeFromRValue(returnNoOSErr()));
 	assert(NSXErrorCodeType_Carbon == errorCodeTypeFromRValue(returnNoOSStatus()));
 	assert(NSXErrorCodeType_PosixOrMach == errorCodeTypeFromRValue(returnNoPosixErr()));
 	assert(NSXErrorCodeType_PosixOrMach == errorCodeTypeFromRValue(returnNoMach_error()));
 	assert(NSXErrorCodeType_Cocoa == errorCodeTypeFromRValue(returnObjCInstance()));
-	assert(NSXErrorCodeType_errstr == errorCodeTypeFromRValue(returnNoErrstr()));
 	
 	//--
 	
@@ -51,7 +49,11 @@ int main (int argc, const char * argv[]) {
 		assert(!error);
 	NSXReturnError(returnObjCInstance());
 		assert(!error);
-	NSXReturnError(returnNoErrstr());
+	NSXReturnError(returnGoodCharPtr());
+		assert(!error);
+	NSXReturnError(returnGoodIntPtr());
+		assert(!error);
+	NSXReturnError(returnGoodBool());
 		assert(!error);
 	
 	//--
@@ -81,11 +83,20 @@ int main (int argc, const char * argv[]) {
 		assert([[error domain] isEqualToString:NSCocoaErrorDomain]);
 		assert([error code] == -1);
 		error = nil;
-	NSXReturnError(returnErrstr());
+	NSXReturnError(returnBadCharPtr());
 		assert(error);
-		assert([[error domain] isEqualToString:@"errstr"]);
+		assert([[error domain] isEqualToString:NULLPointerErrorDomain]);
 		assert([error code] == -1);
-		assert([[[error userInfo] objectForKey:@"errstr"] isEqualToString:@"some_error"]);
+		error = nil;
+	NSXReturnError(returnBadIntPtr());
+		assert(error);
+		assert([[error domain] isEqualToString:NULLPointerErrorDomain]);
+		assert([error code] == -1);
+		error = nil;
+	NSXReturnError(returnBadBool());
+		assert(error);
+		assert([[error domain] isEqualToString:BOOLErrorDomain]);
+		assert([error code] == -1);
 		error = nil;
 	
 	//--
@@ -151,16 +162,39 @@ int main (int argc, const char * argv[]) {
 		error = nil;
 	
 	NS_DURING
-		NSXThrowError(returnErrstr());
+		NSXThrowError(returnBadCharPtr());
 		assert(0);
 	NS_HANDLER
 		assert([[localException name] isEqualToString:@"NSXError"]);
 		error = [[localException userInfo] objectForKey:@"error"];
 	NS_ENDHANDLER
 		assert(error);
-		assert([[error domain] isEqualToString:@"errstr"]);
+		assert([[error domain] isEqualToString:NULLPointerErrorDomain]);
 		assert([error code] == -1);
-		assert([[[error userInfo] objectForKey:@"errstr"] isEqualToString:@"some_error"]);
+		error = nil;
+	
+	NS_DURING
+		NSXThrowError(returnBadIntPtr());
+		assert(0);
+	NS_HANDLER
+		assert([[localException name] isEqualToString:@"NSXError"]);
+		error = [[localException userInfo] objectForKey:@"error"];
+	NS_ENDHANDLER
+		assert(error);
+		assert([[error domain] isEqualToString:NULLPointerErrorDomain]);
+		assert([error code] == -1);
+		error = nil;
+	
+	NS_DURING
+		NSXThrowError(returnBadBool());
+		assert(0);
+	NS_HANDLER
+		assert([[localException name] isEqualToString:@"NSXError"]);
+		error = [[localException userInfo] objectForKey:@"error"];
+	NS_ENDHANDLER
+		assert(error);
+		assert([[error domain] isEqualToString:BOOLErrorDomain]);
+		assert([error code] == -1);
 		error = nil;
 	
 	//--

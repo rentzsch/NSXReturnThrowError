@@ -39,7 +39,7 @@
 			if (!error)
 				NSXReturnError(some_mach_function());
 			if (!error)
-				NSXReturnError([SomeCocoaClass newObject]);
+				NSXReturnError([SomeCocoaClass sharedInstance]);
 			
 			if (error_) *error_ = error;
 			return result;
@@ -66,7 +66,6 @@
 		hung off the exception's userInfo dictionary with the key of @"error".
 
 	@mainpage	NSXReturnThrowError
-	@bug		I bet this breaks on 10.5. Hopefully not beyond repair.
 	@todo		Add a compile-time flag for whether to stuff __FILE__+friends
 				info into the generated NSError or not.
 	
@@ -75,119 +74,26 @@
 
 #import <Foundation/Foundation.h>
 
-typedef	enum {
-	NSXErrorCodeType_Unknown,
-	NSXErrorCodeType_Cocoa,			//	"@"
-	NSXErrorCodeType_PosixOrMach,	//	"i" (-1 == posix+errno, otherwise mach)
-	NSXErrorCodeType_Carbon,		//	"s" || "l"
-	NSXErrorCodeType_errstr			//	"r*" || "*"
-}	NSXErrorCodeType;
+extern NSString *NSXErrorExceptionName;
+extern NSString *NULLPointerErrorDomain;
+extern NSString *BOOLErrorDomain;
 
-//--
-
-#define	errorCodeTypeFromObjCType(objCType)															\
-	({																								\
-		NSXErrorCodeType result;																	\
-		switch (objCType[0]) {																		\
-			case 's':																				\
-			case 'l':																				\
-				result = NSXErrorCodeType_Carbon;													\
-				break;																				\
-			case 'i':																				\
-				result = NSXErrorCodeType_PosixOrMach;												\
-				break;																				\
-			case '@':																				\
-				result = NSXErrorCodeType_Cocoa;													\
-				break;																				\
-			case '*':																				\
-				result = NSXErrorCodeType_errstr;													\
-				break;																				\
-			case 'r':																				\
-				result = '*' == objCType[1] ? NSXErrorCodeType_errstr : NSXErrorCodeType_Unknown;	\
-				break;																				\
-			default:																				\
-				result = NSXErrorCodeType_Unknown;													\
-		}																							\
-		result;																						\
-	})
-
-//--
+void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_, unsigned line_, const char *function_, const char *code_, NSError **error_);
 
 #define	NSXMakeError(ERROR, CODE)	\
 	do{	\
 		typeof(CODE) codeResult = (CODE);	\
-		if ('@' == @encode(typeof(codeResult))[0]) {	\
-			if (nil == codeResult) {	\
-				ERROR = [NSError errorWithDomain:@"NSCocoaErrorDomain"	\
-											code:-1	\
-										userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
-											[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
-											[NSNumber numberWithInt:__LINE__],   @"reportingLine",	\
-											[NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"reportingMethod",	\
-											@#CODE, @"origin",	\
-											nil]];	\
-			}	\
-		} else {	\
-			if (0 != codeResult) {	\
-				switch (errorCodeTypeFromObjCType(@encode(typeof(CODE)))) {	\
-					case NSXErrorCodeType_Carbon:	\
-						ERROR = [NSError errorWithDomain:NSOSStatusErrorDomain	\
-													code:(int)codeResult	\
-												userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
-													[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
-													[NSNumber numberWithInt:__LINE__],   @"reportingLine",	\
-													[NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"reportingMethod",	\
-													@#CODE, @"origin",	\
-													nil]];	\
-						break;	\
-					case NSXErrorCodeType_PosixOrMach:	\
-						if (-1 == (int)codeResult) {	\
-							ERROR = [NSError errorWithDomain:NSPOSIXErrorDomain	\
-														code:errno	\
-													userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
-														[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
-														[NSNumber numberWithInt:__LINE__],   @"reportingLine",	\
-														[NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"reportingMethod",	\
-														@#CODE, @"origin",	\
-														nil]];	\
-						} else {	\
-							ERROR = [NSError errorWithDomain:NSMachErrorDomain	\
-														code:(int)codeResult	\
-													userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
-														[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
-														[NSNumber numberWithInt:__LINE__],   @"reportingLine",	\
-														[NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"reportingMethod",	\
-														@#CODE, @"origin",	\
-														nil]];	\
-						}	\
-						break;	\
-					case NSXErrorCodeType_errstr:	\
-						ERROR = [NSError errorWithDomain:@"errstr"	\
-													code:-1	\
-												userInfo:[NSDictionary dictionaryWithObjectsAndKeys:	\
-													[NSString stringWithUTF8String:__FILE__],   @"reportingFile",	\
-													[NSNumber numberWithInt:__LINE__],   @"reportingLine",	\
-													[NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"reportingMethod",	\
-													@#CODE, @"origin",	\
-													[NSString stringWithUTF8String:(const char*)(intptr_t)codeResult], @"errstr",	\
-													nil]];	\
-						break;	\
-					default:	\
-						assert(0 && "unknown NSXErrorCodeType");	\
-						break;	\
-				}	\
-			}	\
-		}	\
+		NSXMakeErrorImp(@encode(typeof(CODE)), (intptr_t)codeResult, __FILE__, __LINE__, __PRETTY_FUNCTION__, #CODE, &ERROR);	\
 	}while(0)
 
-#define	NSXReturnError(CODE)	NSXMakeError(error,CODE)
+#define	NSXReturnError(CODE)	NSXMakeError(error, CODE)
 
 #define NSXThrowError(CODE) \
 	do{	\
 		NSError *error = nil;	\
 		NSXReturnError(CODE);	\
 		if (error) {	\
-			[[NSException exceptionWithName:@"NSXError"	\
+			[[NSException exceptionWithName:NSXErrorExceptionName	\
 									 reason:[error description]	\
 								   userInfo:[NSDictionary dictionaryWithObject:error forKey:@"error"]] raise];	\
 		}	\
