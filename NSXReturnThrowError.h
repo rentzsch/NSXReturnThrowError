@@ -77,6 +77,7 @@
 extern NSString *NSXErrorExceptionName;
 extern NSString *NULLPointerErrorDomain;
 extern NSString *BOOLErrorDomain;
+extern NSString *AssertionFailureErrorDomain;
 
 void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_, unsigned line_, const char *function_, const char *code_, NSError **error_);
 
@@ -101,3 +102,28 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 			NSXRaiseError(ERROR);	\
 		}	\
 	}while(0)
+
+/* Assertion support */
+
+#define	NSXAssertToError(CODE)																					\
+	if (!(CODE)) {																								\
+		error = [NSError errorWithDomain:AssertionFailureErrorDomain											\
+									code:1																		\
+								userInfo:[NSDictionary dictionaryWithObjectsAndKeys:							\
+									[NSString stringWithUTF8String:__FILE__],   @"reportingFile",				\
+									[NSNumber numberWithInt:__LINE__],   @"reportingLine",						\
+									[NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"reportingMethod",	\
+									[NSString stringWithUTF8String:#CODE], @"origin",							\
+									nil]];																		\
+	}
+
+/* errstr_t support */
+
+#ifndef ERRSTR_T
+#define ERRSTR_T
+	typedef	const char*	errstr_t;
+#endif
+
+NSError* NSXMakeErrorWithErrstr_tImp(errstr_t errstr_, const char *file_, unsigned line_, const char *function_);
+#define NSXMakeErrorWithErrstr_t(ERRSTR)	\
+	NSXMakeErrorWithErrstr_tImp((ERRSTR), __FILE__, __LINE__, __PRETTY_FUNCTION__)

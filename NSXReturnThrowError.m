@@ -10,6 +10,7 @@
 NSString *NSXErrorExceptionName = @"NSXError";
 NSString *NULLPointerErrorDomain = @"NULLPointerErrorDomain";
 NSString *BOOLErrorDomain = @"BOOLErrorDomain";
+NSString *AssertionFailureErrorDomain = @"AssertionFailureErrorDomain";
 
 typedef	enum {
 	NSXErrorCodeType_Unknown,
@@ -17,7 +18,8 @@ typedef	enum {
 	NSXErrorCodeType_PosixOrMach,	//	"i" (-1 == posix+errno, otherwise mach)
 	NSXErrorCodeType_Carbon,		//	"s" || "l"
 	NSXErrorCodeType_ptr,			//	"r*" || "*" || "^"
-	NSXErrorCodeType_BOOL			//	"c"
+	NSXErrorCodeType_BOOL,			//	"c"
+	NSXErrorCodeType_MachPort		//	"I"
 }	NSXErrorCodeType;
 
 static NSXErrorCodeType NSXErrorCodeTypeFromObjCType(const char *objCType) {
@@ -36,6 +38,8 @@ static NSXErrorCodeType NSXErrorCodeTypeFromObjCType(const char *objCType) {
 			return '*' == objCType[1] ? NSXErrorCodeType_ptr : NSXErrorCodeType_Unknown;
 		case 'c':
 			return NSXErrorCodeType_BOOL;
+		case 'I':
+			return NSXErrorCodeType_MachPort;
 		default:
 			return NSXErrorCodeType_Unknown;
 	}
@@ -88,6 +92,13 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 				errorCode = -1;
 			}
 			break;
+		case NSXErrorCodeType_MachPort:
+			//	codeResult's type is a unsigned int. 0 == MACH_PORT_NULL == failure.
+			if (!MACH_PORT_VALID(result_)) {
+				errorDomain = NSMachErrorDomain;
+				errorCode = -1;
+			}
+			break;
 		default:
 			NSCAssert1(NO, @"NSXErrorCodeType_Unknown: \"%s\"", objCType_);
 			break;
@@ -103,4 +114,16 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 									  [NSString stringWithUTF8String:code_], @"origin",
 									  nil]];
 	}
+}
+
+NSError* NSXMakeErrorWithErrstr_tImp(errstr_t errstr_, const char *file_, unsigned line_, const char *function_) {
+	return [NSError errorWithDomain:@"errstr_t"
+							   code:0
+						   userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+							   [NSString stringWithUTF8String:file_],   @"reportingFile",
+							   [NSNumber numberWithInt:line_],   @"reportingLine",
+							   [NSString stringWithUTF8String:function_], @"reportingMethod",
+							   [NSString stringWithUTF8String:errstr_], @"errstr_t",
+							   [NSString stringWithUTF8String:errstr_], NSLocalizedDescriptionKey,
+							   nil]];
 }
