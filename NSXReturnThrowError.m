@@ -1,6 +1,6 @@
 /*******************************************************************************
 	NSXReturnThrowError.m
-		Copyright (c) 2007 Jonathan 'Wolf' Rentzsch: <http://rentzsch.com>
+		Copyright (c) 2007-2008 Jonathan 'Wolf' Rentzsch: <http://rentzsch.com>
 		Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 
 	***************************************************************************/
@@ -94,7 +94,7 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 			break;
 		case NSXErrorCodeType_MachPort:
 			//	codeResult's type is a unsigned int. 0 == MACH_PORT_NULL == failure.
-			if (!MACH_PORT_VALID(result_)) {
+			if (!MACH_PORT_VALID((mach_port_name_t)result_)) {
 				errorDomain = NSMachErrorDomain;
 				errorCode = -1;
 			}

@@ -1,6 +1,6 @@
 /***************************************************************************//**
 	NSXReturnThrowError.h
-		Copyright (c) 2007 Jonathan 'Wolf' Rentzsch: <http://rentzsch.com>
+		Copyright (c) 2007-2008 Jonathan 'Wolf' Rentzsch: <http://rentzsch.com>
 		Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 	
 	@section Overview
@@ -117,8 +117,7 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 									nil]];																		\
 	}
 
-/* errstr_t support */
-
+/* errstr_t support: */
 #ifndef ERRSTR_T
 #define ERRSTR_T
 	typedef	const char*	errstr_t;
