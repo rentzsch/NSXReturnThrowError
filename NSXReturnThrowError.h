@@ -84,7 +84,9 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 #define	NSXMakeError(ERROR, CODE)	\
 	do{	\
 		typeof(CODE) codeResult = (CODE);	\
-		NSXMakeErrorImp(@encode(typeof(CODE)), (intptr_t)codeResult, __FILE__, __LINE__, __PRETTY_FUNCTION__, #CODE, &ERROR);	\
+        if (!ERROR) {   \
+            NSXMakeErrorImp(@encode(typeof(CODE)), (intptr_t)codeResult, __FILE__, __LINE__, __PRETTY_FUNCTION__, #CODE, &ERROR);	\
+        }   \
 	}while(0)
 
 #define	NSXReturnError(CODE)	NSXMakeError(error, CODE)

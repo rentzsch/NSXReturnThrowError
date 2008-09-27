@@ -12,6 +12,7 @@ static id returnObjCInstance() { return [NSFileManager defaultManager]; }
 static char* returnGoodCharPtr(){ return "foo"; }
 static int* returnGoodIntPtr(){ static int dummy = 42; return &dummy; }
 static BOOL returnGoodBool(){ return YES; }
+static BOOL returnGoodBoolAndNoError(NSError **error) { return YES; }
 
 static OSErr returnOSErr() { return qErr; }
 static OSStatus returnOSStatus() { return qErr; }
@@ -21,6 +22,7 @@ static id returnNilObjCInstance() { return nil; }
 static char* returnBadCharPtr(){ return NULL; }
 static int* returnBadIntPtr(){ return NULL; }
 static BOOL returnBadBool(){ return NO; }
+static BOOL returnBadBoolAndError(NSError **error) { assert(error); *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:paramErr userInfo:nil]; return NO; }
 
 //--
 
@@ -54,6 +56,8 @@ int main (int argc, const char * argv[]) {
 	NSXReturnError(returnGoodIntPtr());
 		assert(!error);
 	NSXReturnError(returnGoodBool());
+		assert(!error);
+	NSXReturnError(returnGoodBoolAndNoError(&error));
 		assert(!error);
 	
 	//--
@@ -98,6 +102,11 @@ int main (int argc, const char * argv[]) {
 		assert([[error domain] isEqualToString:BOOLErrorDomain]);
 		assert([error code] == -1);
 		error = nil;
+	NSXReturnError(returnBadBoolAndError(&error));
+        assert(error);
+        assert([[error domain] isEqualToString:NSOSStatusErrorDomain]);
+        assert([error code] == paramErr);
+        error = nil;
 	
 	//--
 	
@@ -195,6 +204,18 @@ int main (int argc, const char * argv[]) {
 		assert(error);
 		assert([[error domain] isEqualToString:BOOLErrorDomain]);
 		assert([error code] == -1);
+		error = nil;
+	
+	NS_DURING
+		NSXThrowError(returnBadBoolAndError(&error));
+		assert(0);
+	NS_HANDLER
+		assert([[localException name] isEqualToString:@"NSXError"]);
+		error = [[localException userInfo] objectForKey:@"error"];
+	NS_ENDHANDLER
+		assert(error);
+		assert([[error domain] isEqualToString:NSOSStatusErrorDomain]);
+		assert([error code] == paramErr);
 		error = nil;
 	
 	//--

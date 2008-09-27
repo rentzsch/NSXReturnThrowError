@@ -15,7 +15,7 @@
 		08FB7796FE84155DC02AAC07 /* TestNSXReturnThrowError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestNSXReturnThrowError.m; sourceTree = "<group>"; };
 		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32A70AAB03705E1F00C91783 /* TestNSXReturnThrowError_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNSXReturnThrowError_Prefix.pch; sourceTree = "<group>"; };
-		79874C510B50BA6300AEDF1A /* NSXReturnThrowError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXReturnThrowError.h; sourceTree = "<group>"; };
+		792530BA0E8F340D00DFAD98 /* NSXReturnThrowError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXReturnThrowError.h; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* TestNSXReturnThrowError */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestNSXReturnThrowError; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -45,7 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				08FB7796FE84155DC02AAC07 /* TestNSXReturnThrowError.m */,
-				79874C510B50BA6300AEDF1A /* NSXReturnThrowError.h */,
+				792530BA0E8F340D00DFAD98 /* NSXReturnThrowError.h */,
 				32A70AAB03705E1F00C91783 /* TestNSXReturnThrowError_Prefix.pch */,
 			);
 			name = Source;
@@ -93,9 +93,11 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "TestNSXReturnThrowError" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 08FB7794FE84155DC02AAC07 /* TestNSXReturnThrowError */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8DD76F960486AA7600D96B5E /* TestNSXReturnThrowError */,
 			);
