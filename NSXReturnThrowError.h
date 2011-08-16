@@ -117,13 +117,3 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 									[NSString stringWithUTF8String:#CODE], @"origin",							\
 									nil]];																		\
 	}
-
-/* errstr_t support: */
-#ifndef ERRSTR_T
-#define ERRSTR_T
-	typedef	const char*	errstr_t;
-#endif
-
-NSError* NSXMakeErrorWithErrstr_tImp(errstr_t errstr_, const char *file_, unsigned line_, const char *function_);
-#define NSXMakeErrorWithErrstr_t(ERRSTR)	\
-	NSXMakeErrorWithErrstr_tImp((ERRSTR), __FILE__, __LINE__, __PRETTY_FUNCTION__)

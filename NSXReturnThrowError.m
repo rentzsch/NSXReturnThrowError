@@ -125,15 +125,3 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 									  nil]];
 	}
 }
-
-NSError* NSXMakeErrorWithErrstr_tImp(errstr_t errstr_, const char *file_, unsigned line_, const char *function_) {
-	return [NSError errorWithDomain:@"errstr_t"
-							   code:0
-						   userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-							   [NSString stringWithUTF8String:file_],   @"reportingFile",
-							   [NSNumber numberWithInt:line_],   @"reportingLine",
-							   [NSString stringWithUTF8String:function_], @"reportingMethod",
-							   [NSString stringWithUTF8String:errstr_], @"errstr_t",
-							   [NSString stringWithUTF8String:errstr_], NSLocalizedDescriptionKey,
-							   nil]];
-}
