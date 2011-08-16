@@ -1,6 +1,6 @@
 /***************************************************************************//**
 	NSXReturnThrowError.h
-		Copyright (c) 2007-2008 Jonathan 'Wolf' Rentzsch: <http://rentzsch.com>
+		Copyright (c) 2007-2011 Jonathan 'Wolf' Rentzsch: <http://rentzsch.com>
 		Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 	
 	@section Overview
@@ -68,7 +68,6 @@
 	@mainpage	NSXReturnThrowError
 	@todo		Add a compile-time flag for whether to stuff __FILE__+friends
 				info into the generated NSError or not.
-	
 
 	***************************************************************************/
 
