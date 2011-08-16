@@ -19,27 +19,30 @@ typedef	enum {
 	NSXErrorCodeType_Carbon,		//	"s" || "l"
 	NSXErrorCodeType_ptr,			//	"r*" || "*" || "^"
 	NSXErrorCodeType_BOOL,			//	"c"
-	NSXErrorCodeType_MachPort		//	"I"
+	NSXErrorCodeType_MachPort,		//	"I"
+    NSXErrorCodeType_CFIndex        //  "q"
 }	NSXErrorCodeType;
 
 static NSXErrorCodeType NSXErrorCodeTypeFromObjCType(const char *objCType) {
 	switch (objCType[0]) {
-		case 's':
-		case 'l':
+		case 's': // @encode(short)
+		case 'l': // @encode(long)
 			return NSXErrorCodeType_Carbon;
-		case 'i':
+		case 'i': // @encode(int)
 			return NSXErrorCodeType_PosixOrMach;
-		case '@':
+		case '@': // @encode(id)
 			return NSXErrorCodeType_Cocoa;
-		case '^':
-		case '*':
+		case '^': // @encode(*foo)
+		case '*': // @encode(char*)
 			return NSXErrorCodeType_ptr;
-		case 'r':
+		case 'r': // @encode(const foo)
 			return '*' == objCType[1] ? NSXErrorCodeType_ptr : NSXErrorCodeType_Unknown;
-		case 'c':
+		case 'c': // @encode(char)
 			return NSXErrorCodeType_BOOL;
-		case 'I':
+		case 'I': // @encode(unsigned int)
 			return NSXErrorCodeType_MachPort;
+        case 'q': // @encode(CFIndex)
+            return NSXErrorCodeType_CFIndex;
 		default:
 			return NSXErrorCodeType_Unknown;
 	}
@@ -97,6 +100,13 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
 			if (!MACH_PORT_VALID((mach_port_name_t)result_)) {
 				errorDomain = NSMachErrorDomain;
 				errorCode = -1;
+			}
+			break;
+		case NSXErrorCodeType_CFIndex:
+			//	codeResult's type is a CFIndex, which seems only used by CFSocket, CFStream (deprecated) and CFURLAccess.
+            //  0 == (0|kCFSocketSuccess) == success.
+			if (0 != result_) {
+				errorDomain = @"CFSocketErrorDomain";
 			}
 			break;
 		default:
