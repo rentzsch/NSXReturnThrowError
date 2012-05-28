@@ -1,5 +1,5 @@
-// NSXReturnThrowError.m semver:2.0.0
-//   Copyright (c) 2007-2011 Jonathan 'Wolf' Rentzsch: http://rentzsch.com
+// NSXReturnThrowError.m semver:3.0.0
+//   Copyright (c) 2007-2012 Jonathan 'Wolf' Rentzsch: http://rentzsch.com
 //   Some rights reserved: http://opensource.org/licenses/MIT
 //   https://github.com/rentzsch/NSXReturnThrowError
 
@@ -116,10 +116,10 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
         *error_ = [NSError errorWithDomain:errorDomain
                                       code:errorCode
                                   userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [NSString stringWithUTF8String:file_],   @"reportingFile",
-                                            [NSNumber numberWithInt:line_],   @"reportingLine",
-                                            [NSString stringWithUTF8String:function_], @"reportingMethod",
-                                            [NSString stringWithUTF8String:code_], @"origin",
+                                            [NSString stringWithUTF8String:file_],   @"__FILE__",
+                                            [NSNumber numberWithInt:line_],   @"__LINE__",
+                                            [NSString stringWithUTF8String:function_], @"__PRETTY_FUNCTION__",
+                                            [NSString stringWithUTF8String:code_], @"CODE",
                                             nil]];
     }
 }

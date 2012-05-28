@@ -1,5 +1,5 @@
-// NSXReturnThrowError.h semver:2.0.0
-//   Copyright (c) 2007-2011 Jonathan 'Wolf' Rentzsch: http://rentzsch.com
+// NSXReturnThrowError.h semver:3.0.0
+//   Copyright (c) 2007-2012 Jonathan 'Wolf' Rentzsch: http://rentzsch.com
 //   Some rights reserved: http://opensource.org/licenses/MIT
 //   https://github.com/rentzsch/NSXReturnThrowError
 
@@ -36,16 +36,22 @@ void NSXMakeErrorImp(const char *objCType_, intptr_t result_, const char *file_,
         }                           \
     }while(0)
 
-/* Assertion support */
 
-#define NSXAssertToError(CODE)                                                                                  \
-    if (!(CODE)) {                                                                                              \
-        error = [NSError errorWithDomain:AssertionFailureErrorDomain                                            \
-                                    code:1                                                                      \
-                                userInfo:[NSDictionary dictionaryWithObjectsAndKeys:                            \
-                                    [NSString stringWithUTF8String:__FILE__],   @"reportingFile",               \
-                                    [NSNumber numberWithInt:__LINE__],   @"reportingLine",                      \
-                                    [NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"reportingMethod",    \
-                                    [NSString stringWithUTF8String:#CODE], @"origin",                           \
-                                    nil]];                                                                      \
+// Support for writing your own SetXXXError() macros:
+
+#define NSXMakeErrorContextDictionary(CODE)                                             \
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:                                  \
+        [NSString stringWithUTF8String:__FILE__],   @"__FILE__",                        \
+        [NSNumber numberWithInt:__LINE__],   @"__LINE__",                               \
+        [NSString stringWithUTF8String:__PRETTY_FUNCTION__], @"__PRETTY_FUNCTION__",    \
+        [NSString stringWithUTF8String:#CODE], @"CODE",                                 \
+        nil]
+
+// Assertion support:
+
+#define NSXAssertToError(CODE)                                                  \
+    if (!(CODE)) {                                                              \
+        error = [NSError errorWithDomain:AssertionFailureErrorDomain            \
+                                    code:1                                      \
+                                userInfo:NSXMakeErrorContextDictionary(CODE)];  \
     }
